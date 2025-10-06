@@ -1,26 +1,118 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* === Custom Animations === */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(5deg); }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@keyframes sparkle {
+  0%, 100% { opacity: 0; transform: scale(0) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1) rotate(180deg); }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@keyframes slideInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* === Utility Classes === */
+.gradient-bg {
+  background: linear-gradient(135deg, #fce7f3, #ffffff, #f9fafb, #fdf2f8);
+  background-size: 300% 300%;
+  animation: gradientShift 15s ease infinite;
+}
+
+.floating {
+  animation: float 4s ease-in-out infinite;
+}
+
+.sparkle {
+  position: absolute;
+  color: #f472b6;
+  animation: sparkle 3s ease-in-out infinite;
+}
+.sparkle:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; }
+.sparkle:nth-child(2) { top: 60%; right: 15%; animation-delay: 1s; }
+.sparkle:nth-child(3) { bottom: 30%; left: 20%; animation-delay: 2s; }
+.sparkle:nth-child(4) { top: 40%; right: 30%; animation-delay: 1.5s; }
+
+.btn-ripple {
+  position: relative;
+  overflow: hidden;
+}
+.btn-ripple::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+.btn-ripple:active::before {
+  width: 300px;
+  height: 300px;
+}
+
+.animate-slide-up {
+  animation: slideInUp 0.8s ease-out forwards;
+}
+.animate-delay-1 { animation-delay: 0.2s; opacity: 0; }
+.animate-delay-2 { animation-delay: 0.4s; opacity: 0; }
+.animate-delay-3 { animation-delay: 0.6s; opacity: 0; }
+
+.loading {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* === Glassmorphism === */
+.glass-card {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+/* === Floating Labels === */
+.floating-label {
+  position: relative;
+}
+.floating-label input:focus + label,
+.floating-label input:not(:placeholder-shown) + label,
+.floating-label select:focus + label,
+.floating-label textarea:focus + label,
+.floating-label textarea:not(:placeholder-shown) + label {
+  transform: translateY(-25px) scale(0.8);
+  color: #f472b6;
+}
+.floating-label label {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  color: #6b7280;
+}
+
+/* === Social Icons Hover === */
+.social-icon {
+  transition: all 0.3s ease;
+}
+.social-icon:hover {
+  transform: translateY(-3px) rotate(10deg);
+  color: #f472b6;
 }
